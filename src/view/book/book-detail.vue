@@ -1,26 +1,30 @@
 <template>
     <!-- 如果数据还未请求到，以下全不渲染 -->
     <div>
-        <section v-if="subjectDetail.title">
-            <div class="title">{{subjectDetail.title}}</div>
-            <div class="post"><img :src="subjectDetail.images.large" alt=""></div>
+        <section v-if="bookDetail.title">
+            <div class="title">{{bookDetail.title}}</div>
+            <div class="post"><img :src="bookDetail.images.large" alt=""></div>
 
             <div class="movieInfo">
-                <p class="score">评分：<b>{{subjectDetail.rating.average}}</b></p>
+                <p class="score">评分：<b>{{bookDetail.rating.average}}</b></p>
                 <div class="player">
-                    {{subjectDetail.countries.join(' / ')}} {{subjectDetail.genres.join(' / ')}}
-                    <template v-for="item in subjectDetail.casts">
-                        {{item.name}} /
-                    </template>
+                    作者：{{bookDetail.author.join(' / ')}} 译者{{bookDetail.translator.join(' / ')}}
+                    <p> 图书标签
+                        <span v-for="item in bookDetail.tags">
+                            {{item.name}} /
+                        </span>
+                    </p>
+                    
                 </div>
                 <ul class="wantoSee">
-                    <li>想看{{subjectDetail.wish_count}}</li>
-                    <li>评论{{subjectDetail.reviews_count}}</li>
+                    <li>评论人数{{bookDetail.rating.numRaters}}</li>
+                    <li>价格{{bookDetail.price}}</li>
                 </ul>
-                <p class="intro">{{subjectDetail.original_title}}的剧情介绍</p>
+                <p class="intro">{{bookDetail.title}}的剧情介绍</p>
                 <summary>
-                    {{subjectDetail.summary}}
+                    {{bookDetail.summary}}
                 </summary>
+                <a :href="bookDetail.ebook_url">电子书地址</a>
             </div>
         </section>
         <spinner :show="show"></spinner>
@@ -28,7 +32,7 @@
 </template>
 <script>
 // 从这个模块中暴露方法较多,要用括号表示调用哪几个方法
-import {fetchSubjectById} from '../../store/app.js';
+import {fetchBookById} from '../../store/app.js';
 import spinner from '../../components/Spinner'
 
 export default {
@@ -36,7 +40,7 @@ export default {
         return {
             id: '',
             show: true,
-            subjectDetail: {}
+            bookDetail: {}
         }
     },
     components: {
@@ -44,9 +48,9 @@ export default {
     },
     mounted() {
         this.id = this.$route.params.id;
-        fetchSubjectById(this.id)
+        fetchBookById(this.id)
             .then((response) => {
-                this.subjectDetail = response;
+                this.bookDetail = response;
                 this.show = false;
             })
     }

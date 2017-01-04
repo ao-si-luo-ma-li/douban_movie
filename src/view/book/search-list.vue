@@ -1,22 +1,24 @@
 <template>
-        <div class="movieList" v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="10" v-show="movieList.subjects.length">
-            <p>{{movieList.title}}</p>
-            <ul>
-                <li v-for="item in movieList.subjects">
-                <!-- router-link中的链接来自router的配置(配置可以放在单独文件，也可直接在创建router中写入) -->
-                    <router-link :to="{name: 'movie-detail', params: {id: item.id}}">
-                        <img :src="item.images.medium" alt="">
-                        <span class="title">{{item.title}}</span>
-                    </router-link>
-                </li>
-            </ul>
-            <p class="totals">搜索的结果数：<b>{{movieList.total}}</b></p>
-            <spinner :show="show"></spinner>
+    <div class="which">
+        <div class="movieList" v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="10" v-show="movieList.books.length">
+        <p>搜索 "{{this.query}} " 的结果</p>
+        <ul>
+            <li v-for="item in movieList.books">
+                <router-link :to="{name: 'book-detail', params: {id: item.id}}">
+                    <img :src="item.images.medium" alt="">
+                    <span class="title">{{item.title}}</span>
+                </router-link>
+            </li>
+        </ul>
+        <p class="totals">搜索的结果数：<b>{{movieList.total}}</b></p>
+        <spinner :show="show" name="which"></spinner>
         </div>
+    </div>
+
 </template>
 <script>
 // 从这个模块中获取操作数据增删改查的方法
-import {fetchSearchMovie} from '../../store/app.js';
+import {fetchSearchBook} from '../../store/app.js';
 import spinner from '../../components/Spinner'
 import infiniteScroll from 'vue-infinite-scroll'
 
@@ -25,7 +27,7 @@ export default {
         return {
             show: true,
             movieList: {
-                subjects: []
+                books: []
             }, // 保存电影列表
             query: '',
             busy: false
@@ -35,10 +37,12 @@ export default {
         spinner
     },
     directives: {
-        infiniteScroll
+        // 和vue配套的，自定义滚动指令
+        infiniteScroll 
     },
     mounted() {
-        this.query = this.$route.query.query;
+        console.log('mounted')
+        this.getPath();
     },
     watch: {
         // 监控$route(路由信息对象) 发生变化时，执行后面的loadAgain函数
@@ -46,24 +50,27 @@ export default {
         '$route': 'loadAgain'
     },
     methods: {
+        getPath() {
+            this.query = this.$route.query.query?this.$route.query.query:'白夜行';
+        },
         // 表示重新输入关键字查询操作
         loadAgain() {
-            this.movieList.subjects = [];
-            this.query = this.$route.query.query;
+            this.movieList.books = [];
             this.loadMore();
         },
         // 本质上是router的滚动加载。待补充
         loadMore() {
-            var start = this.movieList.subjects.length;
+            var start = this.movieList.books.length;
             this.busy = true;  // 表示关闭滚动加载
-            fetchSearchMovie(this.query, start)
+            this.getPath();
+            fetchSearchBook(this.query, start)
                 .then((response => {
-                    this.movieList.subjects = this.movieList.subjects.concat(response.subjects);
+                    this.movieList.books = this.movieList.books.concat(response.books);
                     this.movieList.total = response.total;
                     this.movieList.title = response.title;
                     this.show = false;
                     // 当展示长度小于总长度时，设置为false，表示开启滚动加载
-                    if(this.movieList.subjects.length < this.movieList.total) {
+                    if(this.movieList.books.length < this.movieList.total) {
                         this.busy = false;
                     }
                 }))

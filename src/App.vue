@@ -9,10 +9,15 @@
 
 <script>
 import vHeader from './components/Header'
+
 import vMovie from './view/movie/movies'
 import movieList from './view/movie/movie-list'
 import movieDetail from './view/movie/movie-detail'
 import searchList from './view/movie/search-list'
+
+import bookDetail from './view/book/book-detail'
+import b_searchList from './view/book/search-list'
+
 import  './assets/css/reset.css'
 
 export default {
@@ -21,7 +26,9 @@ export default {
     vMovie,
     movieList,
     movieDetail,
-    searchList
+    searchList,
+    bookDetail,
+    b_searchList
   }
 }
 </script>

@@ -27,5 +27,18 @@ export default [
         path: '/movies/search',
         component: App.components.searchList,
         name: 'search-list'
+    },
+    {
+        path: '/books/search',
+        component: App.components.b_searchList,
+        name: 'b_search-list'
+    },
+    {
+        // 1、这里的:id 有通配符的作用，即使是/search的路径也会被匹配到，所以一定要放在最下面
+        // 2、vue的router匹配原则是，一旦符合要求就不会再继续往下寻找
+        path: '/books/:id',
+        component: App.components.bookDetail,
+        name: 'book-detail'
     }
+    
 ]

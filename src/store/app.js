@@ -12,10 +12,15 @@ const HOST = 'api/';
 export const API_TYPE = {
     movie: {
         in_theaters: 'in_theaters', // 正在上映
-        coming_soon: 'coming_soon' // 即将上映
+        coming_soon: 'coming_soon', // 即将上映
+        top250: 'top250'            // top250
+    },
+    book: {
+        book: 'book', // 正在上映
     }
 };
 
+// 总的异步请求方法
 export function fetch(url) {
     // es6 Promise对象代表异步操作，resolve表示成功后的回调
     // then 代替了ajax中的回调嵌套
@@ -47,5 +52,18 @@ export function fetchSearchMovie(query,start=0) {
     // encodeURI() 函数可把字符串作为 URI 进行编码。
     // 如空格，中文都需要被转义为十六进制序列
     let url = encodeURI(`movie/search?q=${query}&start=${start}`);
+    return fetch(url);
+}
+
+// 通过id获取图书的详情
+export function fetchBookById(id) {
+    return fetch(`book/${id}`);
+}
+
+// 通过关键字搜索图书
+export function fetchSearchBook(query,start=0) {
+    // encodeURI() 函数可把字符串作为 URI 进行编码。
+    // 如空格，中文都需要被转义为十六进制序列
+    let url = encodeURI(`book/search?q=${query}&start=${start}`);
     return fetch(url);
 }

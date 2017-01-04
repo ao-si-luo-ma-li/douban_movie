@@ -23,7 +23,7 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
         '/api' : {
-            target: 'http://api.douban.com/v2',
+            target: 'https://api.douban.com/v2',
             /*参数里有一个changeOrigin参数，接收一个布尔值，如果设置为true,
             那么本地会虚拟一个服务端接收你的请求并代你发送该请求，这样就不会有跨域问题了，当然这只适用于开发环境*/
             changeOrigin: true,

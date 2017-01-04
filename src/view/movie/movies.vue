@@ -2,7 +2,7 @@
     <!-- 承载俩个电影分类的列表，1、正在上映，2、即将上映 -->
     <div>
         <section class="movies" v-show="inTheater.title">
-                <div class="onNow movieList">
+            <div class="onNow movieList">
                 <h2>{{inTheater.title}} <router-link :to="{name: 'movie-list', query: {type: inTheater.type}}">更多 >></router-link></h2>
                 <ul>
                     <li v-for="item in inTheater.subjects">
@@ -18,6 +18,18 @@
                 <h2>{{comingSoon.title}} <router-link :to="{name: 'movie-list', query: {type: comingSoon.type}}">更多 >> </router-link></h2>
                 <ul>
                     <li v-for="item in comingSoon.subjects">
+                    <!-- router-link中的链接来自router的配置(配置可以放在单独文件，也可直接在创建router中写入) -->
+                        <router-link :to="{name: 'movie-detail', params: {id: item.id}}">
+                            <img :src="item.images.medium" alt="">
+                            <span class="title">{{item.title}}</span>
+                        </router-link>
+                    </li>
+                </ul>
+            </div>
+            <div class="movieList">
+                <h2>{{top250.title}} <router-link :to="{name: 'movie-list', query: {type: top250.type}}">更多 >> </router-link></h2>
+                <ul>
+                    <li v-for="item in top250.subjects">
                     <!-- router-link中的链接来自router的配置(配置可以放在单独文件，也可直接在创建router中写入) -->
                         <router-link :to="{name: 'movie-detail', params: {id: item.id}}">
                             <img :src="item.images.medium" alt="">
@@ -42,7 +54,8 @@ export default {
             // 这俩个数据保存电影列表
             // 当他们发生变化时，页面要重绘
             inTheater:{}, 
-            comingSoon: {}
+            comingSoon: {},
+            top250: {}
         }
     },
     components: {
@@ -62,6 +75,12 @@ export default {
             .then((data) => {
                 this.comingSoon = data;
                 this.comingSoon.type = API_TYPE.movie.coming_soon;
+                this.show = false;
+            });
+        fetchMoviesByType(API_TYPE.movie.top250, start, count)
+            .then((data) => {
+                this.top250 = data;
+                this.top250.type = API_TYPE.movie.top250;
                 this.show = false;
             })
     }

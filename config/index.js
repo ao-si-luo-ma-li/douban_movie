@@ -7,14 +7,27 @@ module.exports = {
     index: path.resolve(__dirname, '../dist/index.html'),
     assetsRoot: path.resolve(__dirname, '../dist'),
     assetsSubDirectory: 'static',
-    assetsPublicPath: '/',
-    productionSourceMap: true,
+    // assetsPublicPath: '/',
+    assetsPublicPath: '',
+    // productionSourceMap: true,
+    productionSourceMap: false, // 打包上线时，设置为false 打包后文件体积可以减少百分之八十
     // Gzip off by default as many popular static hosts such as
     // Surge or Netlify already gzip all static assets for you.
     // Before setting to `true`, make sure to:
     // npm install --save-dev compression-webpack-plugin
     productionGzip: false,
-    productionGzipExtensions: ['js', 'css']
+    productionGzipExtensions: ['js', 'css'],
+    proxyTable: {
+        '/api' : {
+            target: 'https://api.douban.com/v2',
+            /*参数里有一个changeOrigin参数，接收一个布尔值，如果设置为true,
+            那么本地会虚拟一个服务端接收你的请求并代你发送该请求，这样就不会有跨域问题了，当然这只适用于开发环境*/
+            
+            pathRewrite: {
+                '^/api': ''
+            }
+        }
+    }
   },
   dev: {
     env: require('./dev.env'),

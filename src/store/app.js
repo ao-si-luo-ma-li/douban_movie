@@ -6,7 +6,8 @@
 import axios from 'axios';
 
 // 使用代理
-const HOST = 'api/';
+// const HOST = 'api/';
+const HOST = 'https://api.douban.com/v2/';
 
 // 常量一般用全大写
 export const API_TYPE = {

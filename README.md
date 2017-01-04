@@ -91,6 +91,11 @@ export function fetch(url) {
   this.$route.query: 表示url查询参数，像'/books/search?q=friend'，即this.$route.query.q==friend
 }
 ```
+4、打包后css中引入图片、字体路径错误
+``` bash 
+由于使用ExtractTextPlugin 将css单独打包到一个文件，而不是嵌入在html中。此时可能出现问题
+答：给ExtractTextPlugin.extract配置publicPath，按照打包的文件夹结构，更改publicPath,可以解决
+```
 ## 没有解决生产环境下的第三方api跨域问题
 
 For detailed explanation on how things work, checkout the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).

@@ -79,15 +79,16 @@ export function fetch(url) {
     }
   ```
   ``3-3 router 和 route的区别 ``
+  
   this.$router 是 Router实例，拥有如push(),go(),back()等方法
   this.$route 是路由信息对象，可以查询路由携带的参数、url等。如下:
   
-    {
-      this.$route.path: 对应当前路由的路径,
+  {
+    this.$route.path: 对应当前路由的路径,
 
-      this.$route.params: 接受在路径中使用冒号开头的数字，像'/books/:id'中的id值,
+    this.$route.params: 接受在路径中使用冒号开头的数字，像'/books/:id'中的id值,
 
-      this.$route.query: 表示url查询参数，像'/books/search?q=friend'，即this.$route.query.q==friend
-    }
+    this.$route.query: 表示url查询参数，像'/books/search?q=friend'，即this.$route.query.q==friend
+  }
     
 For detailed explanation on how things work, checkout the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).

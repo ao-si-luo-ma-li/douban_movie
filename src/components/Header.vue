@@ -1,6 +1,10 @@
 <template>
   <div class="douTop">
-    <div class="title"><router-link :to="{name: 'movies'}">电影</router-link></div>
+    <div class="title">
+      <router-link :to="{name: 'movies'}">电影</router-link>
+      <span> / </span>
+      <router-link :to="{name: 'b_search-list'}">图书</router-link>
+    </div>
     <div class="search">
       <!-- 输入框监听事件，加了按键修饰符，单单指回车按钮 -->
       <input type="text" name="search" placeholder="请输入搜索内容" 
@@ -16,20 +20,27 @@ export default {
   data () {
     return {
       query: '', // 查询的参数
-      path: '/movies/search'  // 查询的路径(基于movie还是book)
+      path: ''  // 查询的路径(基于movie还是book)
     }
   },
   mounted() {
-    // 判断当前是搜索movie列表，还是book列表
-    if(this.$route.path.indexOf('movie') != -1) {
-      this.path = '/movies/search'
-    }
+    this.getPath()
   },
   methods: {
     search() {
+      this.getPath()
       // 当触发search函数，通过router方法往实例中push了一个新值(因为每次搜索的参数内容都是不一样的)
+      // 通过push方法实现跳转页面
       this.$router.push({path: this.path, query: {query: this.query}});
       this.query = '';
+    },
+    getPath() {
+      // 判断当前是搜索movie列表，还是book列表
+      if(this.$route.path.indexOf('movie') != -1) {
+        this.path = '/movies/search'
+      }else if(this.$route.path.includes('book')) {
+        this.path = '/books/search'
+      }
     }
   }
 }
